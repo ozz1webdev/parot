@@ -13,6 +13,9 @@ function Login () {
     const { username, password } = loginData;
     const [errors, setErrors] = useState({});
     const history = useHistory();
+    const [token, setToken] = useState('');
+    const [refreshToken, setRefreshToken] = useState('');
+
 
     const onChanges = (e) => {
         setLoginData({
@@ -21,10 +24,34 @@ function Login () {
         });
     };
 
+    const formSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('http://127.0.0.1:8000/api/token/', loginData);
+
+            if(response.status === 200) {
+                setToken(response.data.access);
+                setRefreshToken(response.data.refresh);
+                localStorage.setItem('token', response.data.access);
+                localStorage.setItem('refresh', response.data.refresh);
+                console.log(response.data);
+                history.push('/');
+            }
+            else {
+                setErrors(response.data);
+                Alert(response.data);
+            }
+        }
+        catch(err) {
+            setErrors(err.response?.data);
+            console.log(err.response.data);
+        }
+    };
+
     return (
         <div>
             <h1>Login</h1>
-            <Form>
+            <Form onSubmit={formSubmit}>
             <Form.Group className="mb-3" controlId="username">
                 <Form.Label>Username</Form.Label>
                 <Form.Control
