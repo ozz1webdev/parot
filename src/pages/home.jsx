@@ -2,9 +2,9 @@ import React, {createContext, useState} from 'react'
 
 
 function Home() {
-
-    const [user, setUser] = useState("ozz1")
-
+    
+    const [user, setUser] = useState(null);
+    
     return (
         <div>
             <h1>Home Page Main</h1>

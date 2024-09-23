@@ -1,3 +1,4 @@
+import React, { createContext } from 'react';
 import styles from './App.module.css';
 import NavBar from './components/navbar';
 import Container from 'react-bootstrap/Container';
@@ -6,6 +7,7 @@ import './api/axiosDefaults';
 import Register from './pages/auth/register';
 import Login from './pages/auth/login';
 import Home from './pages/home';
+
 
 function App() {
   return (

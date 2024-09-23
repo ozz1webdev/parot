@@ -32,6 +32,7 @@ function Login () {
             if(response.status === 200) {
                 setToken(response.data.access);
                 setRefreshToken(response.data.refresh);
+                localStorage.setItem('username', loginData.username);
                 localStorage.setItem('token', response.data.access);
                 localStorage.setItem('refresh', response.data.refresh);
                 console.log(response.data);
