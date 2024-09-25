@@ -7,6 +7,7 @@ import './api/axiosDefaults';
 import Register from './pages/auth/register';
 import Login from './pages/auth/login';
 import Home from './pages/home';
+import Test from './components/test';
 
 
 function App() {
@@ -20,6 +21,8 @@ function App() {
           <Route path="/register" component={Register} />
           <Route render={() => <h1>Page Not Found</h1> } />
         </Switch>
+
+        <Test />
       </Container>
     </div>
   );
