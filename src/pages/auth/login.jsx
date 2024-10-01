@@ -34,10 +34,10 @@ function Login () {
                 setRefreshToken(response.data.refresh);
                 localStorage.clear();
                 localStorage.setItem('username', loginData.username);
-                localStorage.setItem('token', response.data.access);
-                localStorage.setItem('refresh', response.data.refresh);
-                console.log(response.data);
-                history.push('/');
+                localStorage.setItem('access_token', response.data.access);
+                localStorage.setItem('refresh_token', response.data.refresh);
+                localStorage.setItem('token', true);
+                history.push('/'); history.go(0);
             }
             else {
                 setErrors(response.data);

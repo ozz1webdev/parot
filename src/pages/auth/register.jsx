@@ -9,9 +9,11 @@ function Register() {
   const [registerData, setRegisterData] = useState({
     username: '',
     password: '',
+    password2: '',
+    email: ''
   });
-  const { username, password } = registerData;
 
+  const { username, password, password2, email } = registerData;
   const [errors, setErrors] = useState({});
 
   const onChanges = (e) => {
@@ -25,19 +27,38 @@ function Register() {
 
   const formSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post('/register', registerData);
-      history.push('/login');
-    }
-    catch(err) {
-      setErrors(err.response?.data);
-    }
+      const response = await axios.post('http://127.0.0.1:8000/api/register/', registerData, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      })
+      .then((response) => {
+        console.log("response: ", response);
+        history.push('/login');
+      })
+      .catch((error) => {
+        setErrors(error.response.data);
+        console.log(error.response.data);
+      });
   };
+  
 
   return (
     <div>
         <h1>Register</h1>
         <Form onSubmit={formSubmit}>
+
+        <Form.Group className="mb-3" controlId="email">
+            <Form.Label>Email Address</Form.Label>
+            <Form.Control 
+              onChange={onChanges} 
+              type="email" 
+              placeholder="Email Address" 
+              name='email' 
+              value={email} />
+        </Form.Group>
+
+
           <Form.Group className="mb-3" controlId="username">
             <Form.Label>Username</Form.Label>
             <Form.Control
@@ -60,10 +81,22 @@ function Register() {
               name='password' 
               value={password} />
             </Form.Group>
-            <Button variant="primary" type="submit">
+
+        <Form.Group className="mb-3" controlId="password2">
+            <Form.Label>Enter Password Again</Form.Label>
+            <Form.Control 
+              onChange={onChanges} 
+              type="password" 
+              placeholder="Password" 
+              name='password2' 
+              value={password2} />
+        </Form.Group>
+
+        <Button variant="primary" type="submit">
               Register
             </Button>
-        </Form>
+            </Form>
+
         <p>Already have an account? <Link to="/login">Login</Link></p>
     </div>
   );
