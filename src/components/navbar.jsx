@@ -19,6 +19,7 @@ function NavBar() {
         localStorage.removeItem('refresh_token');
         localStorage.removeItem('token');
         setIsLoggedIn(false);
+        history.push('/');
         history.go(0);
     }
 

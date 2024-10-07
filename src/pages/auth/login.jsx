@@ -1,4 +1,4 @@
-import React, { useState, } from 'react';
+import React, { useEffect, useState, } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -33,12 +33,25 @@ function Login () {
                 setToken(response.data.access);
                 setRefreshToken(response.data.refresh);
                 localStorage.clear();
-                localStorage.setItem('username', loginData.username);
                 localStorage.setItem('access_token', response.data.access);
                 localStorage.setItem('refresh_token', response.data.refresh);
                 localStorage.setItem('token', true);
+                localStorage.setItem('username', loginData.username);
+                ///////////////////////////////////
+                const response2 = await axios.get('http://127.0.0.1:8000/api/profile/', {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                .then(response2 => {
+                    localStorage.setItem('userId', response2.data.id);
+                    localStorage.setItem('profile_picture', response2.data.profile_picture);
+        
+                });
+                //////////////////////////////////
                 history.push('/'); history.go(0);
             }
+            
             else {
                 setErrors(response.data);
                 Alert(response.data);
@@ -48,6 +61,7 @@ function Login () {
             setErrors(err.response?.data);
             console.log(err.response.data);
         }
+
     };
 
     return (

@@ -1,30 +1,47 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-
+import { Button } from "react-bootstrap";
 
 function Test() {
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        axios.get('http://127.0.0.1:8000/api/list/', {
-            headers: {
-                Authorization: `Token ${token}`
-            }
-        })
+
+    const [data, setData] = useState([]);
+    const [token, setToken] = useState('');
+    const [refreshToken,setRefreshToken] = useState('');
+    const [loginData, setLoginData] = useState({
+        username: 'user1',
+        password: 'platanos',
+    });
+    const { username, password } = loginData;
+
+    const loginFunc = () => {
+        axios.post('http://127.0.0.1:8000/api/token/', loginData)
         .then(response => {
-            setData(response.data);
+            console.log(response.data);
+            setToken(response.data.access);
+            setRefreshToken(response.data.refresh);
         })
         .catch(error => {
-            setData(error.data);
             console.log(error);
         });
-    }, [])            
-    
-    const [data, setData] = useState([]);
+    }
 
+    const refreshFunc = () => {
+        axios.post('http://127.0.0.1:8000/api/token/refresh/', {
+            'refresh': refreshToken
+        })
+        .then(response => {
+            console.log(response.data);
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }
+    
     return (
         <div>
-            <h1>API DATA</h1>
-            <p>{data}</p>
+            <h1>Test Component</h1>
+            <Button onClick={loginFunc}>Login</Button>
+            <Button onClick={refreshFunc}>Refresh</Button>
         </div>
     );
 
